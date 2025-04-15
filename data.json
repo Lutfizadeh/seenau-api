@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Pomodoro",
+        "time": 20
+    },
+    {
+        "name": "Custom",
+        "time": 5
+    },
+    {
+        "name": "Long time",
+        "time": 30
+    }
+]
