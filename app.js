@@ -4,6 +4,7 @@ import connection from './database/connection.js'
 import { errorHandler, pathNotFound } from './middleware/errorMiddleware.js'
 import cookieParser from 'cookie-parser'
 import userRoutes from './routes/userRoutes.js'
+import patternRoutes from './routes/patternRoutes.js'
 
 const app = express()
 const port = 3000
@@ -16,6 +17,7 @@ app.use(cookieParser())
 // Parent Routes
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/pattern', patternRoutes)
 
 // Error Handler
 app.use(pathNotFound)
