@@ -33,10 +33,19 @@ export const allPattern = asyncHandler(async (req, res) => {
     if (req.user) {
         // Autentikasi role
         if (req.user.role === "admin") {
-            if (req.query.name) {
+            if (req.query.name && req.query.category) {
+                query = Pattern.find({
+                    category: req.query.category,
+                    name: req.query.name,
+                })
+            } else if(req.query.category) {
+                query = Pattern.find({
+                    category: req.query.category,
+                })
+            } else if(req.query.name) {
                 query
             } else {
-                query = Pattern.find(queryObj);
+                query = Pattern.find(queryObj)
             }
         } else {
             if (req.query.name) {
@@ -49,7 +58,7 @@ export const allPattern = asyncHandler(async (req, res) => {
                         user: req.user.id,
                         category: req.query.category,
                     })
-                } else {
+                } else if(req.query.name) {
                     query = Pattern.find({
                         user: req.user.id,
                     });
