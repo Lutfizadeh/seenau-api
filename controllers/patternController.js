@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Pattern from "../models/pattern.js";
+import user from "../models/user.js";
 
 export const createPattern = asyncHandler(async (req, res) => {
     const userId = req.user.id;
@@ -15,80 +16,68 @@ export const createPattern = asyncHandler(async (req, res) => {
 });
 
 export const allPattern = asyncHandler(async (req, res) => {
-    // Req query
-    const queryObj = { ...req.query };
+    const {
+        name,
+        category,
+        sortBy,
+        sortOrder,
+        page = 1,
+        limit = 5,
+    } = req.query;
 
-    // Abaikan field
-    const excludeFields = ["page", "limit", "name"];
+    // Validasi user role
+    let filter = {};
 
-    excludeFields.forEach((element) => delete queryObj[element]);
+    if (req.user.role !== "admin") {
+        filter = {user: req.user.id}
+    }
 
-    let query = Pattern.find({
-        name: {
-            $regex: req.query.name,
-            $options: "i",
-        }
-    });
+    //   Searching name
+    if (name) {
+        filter.$or = [
+            {
+                name: {
+                    $regex: name,
+                    $options: "i",
+                },
+            },
+        ];
+    }
 
-    if (req.user) {
-        // Autentikasi role
-        if (req.user.role === "admin") {
-            if (req.query.name && req.query.category) {
-                query = Pattern.find({
-                    category: req.query.category,
-                    name: req.query.name,
-                })
-            } else if(req.query.category) {
-                query = Pattern.find({
-                    category: req.query.category,
-                })
-            } else if(req.query.name) {
-                query
-            } else {
-                query = Pattern.find(queryObj)
-            }
-        } else {
-            if (req.query.name) {
-                query.find({
-                    user: req.user.id
-                })                
-            } else {
-                if(req.query.category) {
-                    query = Pattern.find({
-                        user: req.user.id,
-                        category: req.query.category,
-                    })
-                } else if(req.query.name) {
-                    query = Pattern.find({
-                        user: req.user.id,
-                    });
-                }
-            }
-        }
+    //   Filtering by category
+    if (category) {
+        filter.category = category;
+    }
+
+    // Sorting
+    const sortOptions = {};
+    if (sortBy) {
+        const order = sortOrder === "desc" ? -1 : 1;
+        sortOptions[sortBy] = order;
     }
 
     // Pagination
-    const page = req.query.page * 1 || 1;
-    const limitData = req.query.limit * 1 || 7;
-    const skipData = (page - 1) * limitData;
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    
+    // Eksekusi query
+    const data = await Pattern.find(filter)
+    .sort(sortOptions)
+    .skip(skip)
+    .limit(parseInt(limit));
+    
+    const totalCount = await Pattern.countDocuments(filter)
 
-    query = query.skip(skipData).limit(limitData);
-
-    const data = await query
-    let count = await Pattern.countDocuments()
-    if (req.query.page) {
-        if (skipData >= count) {
-            res.status(404);
-            throw new Error("Halaman tidak ditemukan");
-        }
+    if(skip >= totalCount) {
+        res.status(404);
+        throw new Error("Halaman tidak ditemukan")
     }
 
-    return res.status(200).json({
-        message: "Berhasil menampilkan seluruh pola belajar",
+    res.status(200).json({
+        message: "Berhasil menampilkan semua pola belajar",
         data,
-        count,
+        total: totalCount,
     })
-})
+});
 
 export const detailPattern = asyncHandler(async (req, res) => {
     const paramId = req.params.id;
