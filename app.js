@@ -14,6 +14,7 @@ app.use(cors(
     credentials: true,              
   })
 ));
+app.use(cookieParser());
 const port = 3000
 
 // Middleware
