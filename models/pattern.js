@@ -27,6 +27,10 @@ const patternSchema = new Schema({
     required: [true, 'Kategori pola belajar harus diisi'],
     enum: ['pemula', 'menengah', 'mahir']
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 export default mongoose.model('Pattern', patternSchema)
