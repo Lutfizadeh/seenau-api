@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 import asyncHandler from './asyncHandler.js'
+import Pattern from "../models/pattern.js"
 
 export const protectedMiddleware = asyncHandler(async(req, res, next) => {
     let token
@@ -26,8 +27,8 @@ export const isAdmin = asyncHandler(async(req, res, next) => {
         if(req.user.role === 'admin') {
             next()
         } else {
-            res.status(401)
-            throw new Error('Not authorized, bukan admin')
+            res.status(403)
+            throw new Error('Gagal mengambil data, bukan admin!')
         }
     }
 })

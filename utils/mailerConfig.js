@@ -4,8 +4,8 @@ const mailerConfig = {
     // secure: false,
     service: 'gmail',
     auth: {
-        user: "lutfizadeh5@gmail.com",
-        pass: "vhdf nuot swkn vssy",
+        user: process.env.EMAIL,
+        pass: process.env.APP_PASSWORD,
     },
     connectionTimeout: 5000
 }
