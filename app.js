@@ -8,12 +8,6 @@ import patternRoutes from './routes/patternRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
 
 const app = express()
-app.use(cors(
-  ({
-    origin: "http://localhost:5173", 
-    credentials: true,              
-  })
-));
 const port = 3000
 
 // Middleware
