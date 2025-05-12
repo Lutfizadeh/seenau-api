@@ -1,20 +1,20 @@
 import asyncHandler from "../middleware/asyncHandler.js"
-import Pattern from "../models/pattern.js"
+import Task from "../models/task.js"
 
-export const createPattern = asyncHandler(async (req, res) => {
+export const createTask = asyncHandler(async (req, res) => {
     const userId = req.user.id;
-    const newPattern = await Pattern.create({
+    const newTask = await Task.create({
         ...req.body,
         user: userId,
     });
 
     return res.status(201).json({
-        message: "Berhasil membuat pola belajar",
-        data: newPattern,
+        message: "Berhasil membuat tugas",
+        data: newTask,
     });
 });
 
-export const allPattern = asyncHandler(async (req, res) => {
+export const allTask = asyncHandler(async (req, res) => {
     const {
         name,
         category,
@@ -59,12 +59,12 @@ export const allPattern = asyncHandler(async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit)
     
     // Eksekusi query
-    const data = await Pattern.find(filter)
+    const data = await Task.find(filter)
     .sort(sortOptions)
     .skip(skip)
     .limit(parseInt(limit));
     
-    const totalCount = await Pattern.countDocuments(filter)
+    const totalCount = await Task.countDocuments(filter)
 
     if(skip >= totalCount) {
         res.status(404);
@@ -72,15 +72,15 @@ export const allPattern = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json({
-        message: "Berhasil menampilkan semua pola belajar",
+        message: "Berhasil menampilkan semua tugas",
         data,
         total: totalCount,
     })
 });
 
-export const detailPattern = asyncHandler(async (req, res) => {
+export const detailTask = asyncHandler(async (req, res) => {
     const paramId = req.params.id;
-    const data = await Pattern.findById(paramId);
+    const data = await Task.findById(paramId);
 
     if (!data) {
         res.status(404);
@@ -88,29 +88,29 @@ export const detailPattern = asyncHandler(async (req, res) => {
     }
 
     return res.status(200).json({
-        message: "Berhasil menampilkan detail pola belajar",
+        message: "Berhasil menampilkan detail tugas",
         data,
     });
 });
 
-export const updatePattern = asyncHandler(async (req, res) => {
+export const updateTask = asyncHandler(async (req, res) => {
     const paramId = req.params.id;
-    const data = await Pattern.findByIdAndUpdate(paramId, req.body, {
+    const data = await Task.findByIdAndUpdate(paramId, req.body, {
         runValidators: false,
         new: true,
     });
 
     return res.status(200).json({
-        message: "Berhasil memperbarui pola belajar",
+        message: "Berhasil memperbarui tugas",
         data,
     });
 });
 
-export const deletePattern = asyncHandler(async (req, res) => {
+export const deleteTask = asyncHandler(async (req, res) => {
     const paramId = req.params.id;
-    await Pattern.findByIdAndDelete(paramId);
+    await Task.findByIdAndDelete(paramId);
 
     return res.status(200).json({
-        message: "Berhasil menghapus pola belajar",
+        message: "Berhasil menghapus tugas",
     });
 });
