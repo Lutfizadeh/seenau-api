@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 import asyncHandler from './asyncHandler.js'
-import Pattern from "../models/pattern.js"
 
 export const protectedMiddleware = asyncHandler(async(req, res, next) => {
     let token

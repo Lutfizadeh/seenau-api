@@ -5,7 +5,7 @@ import { errorHandler, pathNotFound } from './middleware/errorMiddleware.js'
 import cookieParser from 'cookie-parser'
 import userRoutes from './routes/userRoutes.js'
 import patternRoutes from './routes/patternRoutes.js'
-import cors from 'cors';
+import taskRoutes from './routes/taskRoutes.js'
 
 const app = express()
 app.use(cors(
@@ -25,6 +25,7 @@ app.use(cookieParser())
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/pattern', patternRoutes)
+app.use('/api/v1/task', taskRoutes)
 
 // Error Handler
 app.use(pathNotFound)
