@@ -6,8 +6,12 @@ import cookieParser from 'cookie-parser'
 import userRoutes from './routes/userRoutes.js'
 import patternRoutes from './routes/patternRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
-
+import cors from 'cors';
 const app = express()
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true
+}));
 const port = 3000
 
 // Middleware
