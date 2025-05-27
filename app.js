@@ -8,10 +8,13 @@ import patternRoutes from './routes/patternRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
 import cors from 'cors';
 const app = express()
-app.use(cors({
-  origin: 'https://seenau-web-fe.onrender.com', 
-  credentials: true
-}));
+
+app.use(cors(
+  ({
+    origin: ["http://localhost:5173", "https://seenau-web-fe.onrender.com"], 
+    credentials: true,              
+  })
+));
 const port = 3000
 
 // Middleware
