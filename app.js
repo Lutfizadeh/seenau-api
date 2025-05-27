@@ -10,7 +10,7 @@ import taskRoutes from './routes/taskRoutes.js'
 const app = express()
 app.use(cors(
   ({
-    origin: "http://localhost:5173", 
+    origin: ["http://localhost:5173", "https://seenau-web-fe.onrender.com"], 
     credentials: true,              
   })
 ));

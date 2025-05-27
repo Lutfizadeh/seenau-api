@@ -27,13 +27,13 @@ const createResToken = async(user, statusCode, res) => {
     const cookieOptionToken = {
         expires: new Date(Date.now() + 24*60*60*1000),
         httpOnly: true,
-        security: false
+        secure: process.env.NODE_ENV === 'production'
     }
 
     const cookieOptionRefresh = {
         expires: new Date(Date.now() + 7*24*60*60*1000),
         httpOnly: true,
-        security: false
+        secure: process.env.NODE_ENV === 'production'
     }
 
     res.cookie('cookie', accessToken, cookieOptionToken)
