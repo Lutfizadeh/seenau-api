@@ -11,7 +11,7 @@ const app = express()
 
 app.use(cors(
   ({
-    origin: ["http://localhost:5173", "https://seenau-web-fe.onrender.com"], 
+    origin: ["http://localhost:5173", "https://seenau-web-fe.onrender.com", "http://192.168.18.19:40000/"], 
     credentials: true,              
   })
 ));
