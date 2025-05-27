@@ -6,8 +6,9 @@ import cookieParser from 'cookie-parser'
 import userRoutes from './routes/userRoutes.js'
 import patternRoutes from './routes/patternRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
-
+import cors from 'cors';
 const app = express()
+
 app.use(cors(
   ({
     origin: ["http://localhost:5173", "https://seenau-web-fe.onrender.com"], 
